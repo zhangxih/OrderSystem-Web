@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="icon" href="/icon/log-in-outline.svg" />
+    <script src="https://cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/home-style.css" type="text/css">
+    <script type="text/javascript" src="/js/cookie.js"></script>
+</head>
+
+
+
+<div class="container" id="title_bar">
+    <span id="title">Yummy</span>
+    <ul class="nav">
+        <li id="btn_home">Home</li>
+        <li id="btn_personal">My
+            <ul class="sub">
+                <li id="btn_info">Personal</li>
+                <li id="btn_order">Orders</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+
+
+
+
+
+
+<div class="container" id="display_box">
+    <div class="container" id="background_box">
+    </div>
+    <div class="messageList">
+        <span id="description1">Top Rated Restaurants</span>
+        <span id="description2">Cum doctus civibus efficiantur in imperdiet deterruisset.</span>
+    </div>
+
+
+
+</div>
+</body>
+<script>
+
+
+
+    $(".nav>#btn_home").click(function () {
+        window.location.href = "/html/home.html";
+    });
+
+    $(".nav>#btn_personal").mouseenter(function () {
+        var $sub = $(this).children(".sub");
+        $sub.stop();
+        $sub.slideDown(500);
+
+    });
+
+    $(".nav>#btn_personal").mouseleave(function () {
+        var $sub = $(this).children(".sub");
+
+        $sub.stop();
+        $sub.slideUp(500);
+    });
+
+    $(".sub>#btn_info").click(function () {
+        window.location.href = "/html/info.html";
+    });
+
+    $(".messageList").delegate(".info","click",function(){
+        addCookie("merchantid",this.id);
+        window.location.href = "/html/cuisines.html";
+    });
+
+    $(".sub>#btn_order").click(function () {
+        window.location.href = "/html/order.html";
+    });
+
+
+    $.ajax({
+        type: "GET",
+        url: "/merchant/getAll",
+        dataType: "json",
+        success: (result) => {
+            console.log(result);//打印服务端返回的数据(调试用)
+            var Merchants = eval(result);
+            $.each(Merchants, function (index, value) {
+                console.log(value);
+                var id = value.id;
+                var name = value.name;
+                var img=value.imgpath;
+                var businesshours = value.businesshours;
+                var merchantdescription = value.merchantdescription;
+                var address = value.address;
+                var merchant = createEle(id, name, businesshours, merchantdescription, address,img);
+                console.log(merchant);
+                $(".messageList").append(merchant);
+
+            });
+
+
+        },
+        error: function (e) { console.log(e); alert(e); },
+    });
+
+    function createEle(id, name, businesshours, merchantdescription, address,img) {
+        var $merchant = $(" <div class=\"info\" id=\"" + id + "\">\n" +
+            "<img src=\"/imgresources/"+img+"\" alt=\"没有图片\" />\n"+
+            "<div id=\"merchantinfo\">\n" +
+            "<span id=\"address\">" + address + "</span>\n" +
+            "<span id=\"name\">" + name + "</span>\n" +
+            "<span id=\"businesshours\">" + businesshours + "</span>\n" +
+            "<span id=\"merchantdescription\">" + merchantdescription + "</span>\n" +
+            "</div>\n" +
+            "</div>");
+        return $merchant;
+    };
+
+</script>
+</html>

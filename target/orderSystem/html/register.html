@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="icon" href="/icon/log-in-outline.svg"/>
+    <script src="https://cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="../css/login-style.css" type="text/css">
+
+</head>
+
+
+<body>
+    <div class="container">
+        <div class="tit">
+            <h2>Register</h2>
+        </div>
+        <form method="post" onsubmit="return false" action="##">
+            <input id="id" type="text" name="id" placeholder="enter your account">
+            <input id="pwd" type="text" name="password" placeholder="enter your password">
+            <input id="btn_register" type="button" value="Sign up">
+        </form>
+    </div>
+</body>
+
+<script>
+    $("#btn_register").click(function(){
+        $.ajax({
+            type: 'POST',
+            url: "/customer/register",
+            data:$('form').serialize(),
+            success:(data)=>{
+                console.log(data);//打印服务端返回的数据(调试用)
+                alert("注册成功")
+                window.location.href = "login.html";
+            },
+            error:function() {alert("注册失败");},
+
+        });
+    })
+</script>
+</html>

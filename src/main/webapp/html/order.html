@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order</title>
+    <link rel="icon" href="/icon/log-in-outline.svg" />
+    <script src="https://cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/order-style.css" type="text/css">
+    <script type="text/javascript" src="/js/cookie.js"></script>
+
+</head>
+
+
+<body>
+    <div class="container" id="title_bar">
+        <span id="title">Yummy</span>
+        <ul class="nav">
+            <li id="btn_home">Home</li>
+            <li id="btn_personal">My
+                <ul class="sub">
+                    <li id="btn_info">Personal</li>
+                    <li id="btn_order">Orders</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+
+
+
+    <div class="container" id="display_box">
+        <div class="messageList">
+
+        </div>
+
+    </div>
+</body>
+<script>
+
+
+    $(".nav>#btn_home").click(function () {
+        window.location.href = "/html/home.html";
+    })
+    $(".nav>#btn_personal").mouseenter(function () {
+        var $sub = $(this).children(".sub");
+        $sub.stop();
+        $sub.slideDown(500);
+    })
+    $(".nav>#btn_personal").mouseleave(function () {
+        var $sub = $(this).children(".sub");
+        $sub.stop();
+        $sub.slideUp(500);
+    })
+    $(".sub>#btn_info").click(function () {
+        window.location.href = "/html/info.html";
+    })
+    $(".sub>#btn_order").click(function () {
+        window.location.href = "/html/order.html";
+    })
+
+
+    $(".messageList").delegate(".info","click",function(){
+        addCookie("OrderId",this.id);
+        window.location.href = "/html/orderitem.html";
+    });
+
+    $(".messageList").delegate("#id>#cancelorder","click",function(){
+    
+    });
+
+
+
+$.ajax({
+    type: "POST",
+    url: "/order/getAllByCustomerId",
+    data: { id: getCookie("id") },
+    success: (result) => {
+        console.log(result);//打印服务端返回的数据(调试用);
+        $.each(result, function (index, value) {
+            var id = value.id;
+            var time = value.time;
+            var totalprice = value.totalprice;
+            var status = value.status;
+            var merchantid = value.merchantid;
+            var merchantname = "";
+            $.ajax({
+                type: "POST",
+                url: "/merchant/getAccount",
+                data: { id:merchantid },
+                async:false,
+                success: (result) => {
+                    console.log(result);//打印服务端返回的数据(调试用);
+                    img =result.imgpath;
+                    merchantname = result.name;
+                    console.log(merchantname);
+                },
+                error: function (e) { console.log(e); alert(e); },
+            });
+            console.log(merchantname);
+            var order = createEle(id, time, merchantname, totalprice, status,img);
+            console.log(order);
+            $(".messageList").prepend(order);
+
+        });
+
+
+    },
+    error: function (e) { console.log(e); alert(e); },
+});
+
+function createEle(id, time, merchantname, totalprice, status,img) {
+    var $order = $(" <div class=\"info\" id=\"" + id + "\">\n" +
+        "<img src=\"/imgresources/"+img+"\" alt=\"没有图片\" />\n"+
+        "<div id=\"orderinfo\">\n" +
+        "<span id=\"orderid\">" + id + "</span>\n" +
+        "<span id=\"merchantname\">" + merchantname + "</span>\n" +
+        "<span id=\"time\">" + time + "</span>\n" +
+        "<span id=\"totalprice\">" + totalprice + "</span>\n" +
+        "<span id=\"status\">" + status + "</span>\n" +
+        "</div>\n" +
+        "</div>");
+    return $order;
+};
+
+    $(".info").click(function(){
+        AddCookie("OrderId",this.id);
+        window.location.href("");
+    })
+
+</script>
+
+</html>
+
+</html>

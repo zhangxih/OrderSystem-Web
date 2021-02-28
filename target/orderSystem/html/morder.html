@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单管理</title>
+    <script src="https://cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="../css/order.css" type="text/css">
+    <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+		    $("#fade").click(function() {
+			    document.getElementById("MyDiv").style.display = 'none';
+			    document.getElementById("fade").style.display = 'none';
+            });
+
+            setInterval(function(){ document.getElementById("p3").style.display = 'none'; }, 1000);
+
+            var id = $.cookie('id');
+            var divA = document.getElementById("p1");
+            divA.innerHTML = divA.innerText+id+'!     今天过得如何？';
+
+            $.ajax({
+                type: "GET",
+                url: "/order/getAllByMerchantId",
+                data:{id: id},
+                success:(result)=>{
+                    $.each(result, function (index, value) {
+                        var oid = value.id;
+                        var datetime = new Date(value.time);
+                        var year = datetime.getFullYear();
+                        var month = datetime.getMonth() + 1;
+                        var date = datetime.getDate();
+                        var hour = datetime.getHours();
+                        var minute = datetime.getMinutes();
+                        var second = datetime.getSeconds();
+                        var time =  year + "-" + month + "-" + date+" "+hour+":"+minute+":"+second;
+                        var totalprice = value.totalprice;
+                        var status = value.status;
+                        var cid = value.customerid;
+                        var cname = "";
+                        var address = "";
+                        var imgpath = value.orderItems[0].cuisine.imgpath;
+                        $.ajax({
+                            type: "POST",
+                            url: "/customer/getAccount",
+                            data: { id:cid },
+                            async:false,
+                            success: (result) => {
+                                cname = result.name;
+                                address = result.address;
+                            },
+                            error: function (e) { console.log(e); alert(e); },
+                        });
+                        var order = createEle(oid, time, cname, totalprice, status, address, imgpath);
+                        $(".container").prepend(order);
+
+                    });
+                },
+                error:function(e) {console.log(e);alert(e);},
+            });
+
+            function createEle(oid, time, cname, totalprice, status, address, imgpath)
+            {
+                var $order=$("<div class=\"ordercontainer\" id=\""+oid+"\">\n"+
+                    "<img class=\"outsideimg\" src=\"/imgresources/"+imgpath+"\" alt=\"没有菜品图片\" />\n"+
+                    "<div class=\"info\">\n"+
+                    "<p>下单时间： "+time+"            顾客名："+cname+"            地址："+address+"</p>\n"+
+                    "<p>总价： "+totalprice+"                        订单状态："+status+"</p>\n"+
+                    "</div>\n"+
+                    "<div style=\"clear:both\"></div>\n"+
+                    "</div>");
+                return $order;
+            };
+
+            $(document).on('click','.ordercontainer',function(){
+                $('.white_content').html("");
+                var orderid = this.id;
+                $.ajax({
+                    type: "GET",
+                    url: "/order/getById",
+                    data:{id: orderid},
+                    success:(result)=>{
+                        var obj = eval(result);
+                        if (obj.status=="等待商家接单")
+                            var btext = "接单";
+                        if (obj.status=="商家已接单")
+                            var btext = "完成订单";
+                        if (obj.status=="商家完成订单，等待用户收货")
+                            var btext = "回到订单页面";
+                        var orid = obj.id;
+                        var $b=$("<button id=\""+orid+"\">"+btext+"</button>");
+                        $(".white_content").prepend($b);
+                        $.each(obj.orderItems, function (index, value) {
+                            var imgpath = value.cuisine.imgpath;
+                            var cuisinenum = value.cuisinenum;
+                            var cuname = value.cuisine.cuisinename;
+                            var cuisine = createEle2(cuisinenum, cuname, imgpath);
+                            $(".white_content").prepend(cuisine);
+                        });
+                    },
+                    error:function(e) {console.log(e);alert(e);},
+                });
+
+                document.getElementById("MyDiv").style.display = 'block';
+                document.getElementById("fade").style.display = 'block';
+                var bgdiv = document.getElementById("fade");
+                bgdiv.style.width = document.body.scrollWidth;
+                $("#fade").height($(document).height());
+            });
+
+            function createEle2(cuisinenum, cuname, imgpath)
+            {
+                var $cuisine=$("<div class=\"dishcontainer\">\n"+
+                    "<img class=\"insideimg\" src=\"/imgresources/"+imgpath+"\" alt=\"没有菜品图片\" />\n"+
+                    "<div class=\"info2\">\n"+
+                    "<p>"+cuname+"</p>\n"+
+                    "<p>X"+cuisinenum+"</p>\n"+
+                    "</div>\n"+
+                    "<div style=\"clear:both\"></div>\n"+
+                    "</div>");
+                return $cuisine;
+            };
+
+            $(document).on('click','button',function(){
+                if (this.innerHTML=="接单"){
+                    $.ajax({
+                        type: 'POST',
+                        url: "/order/takeOrder",
+                        data:{id: this.id},
+                        success:(data)=>{
+                            alert("接单成功")
+                            window.location.href = "./morder.html";
+                        },
+                        error:function() {alert("接单失败");},
+
+                    });
+                }
+                if (this.innerHTML=="完成订单"){
+                    $.ajax({
+                        type: 'POST',
+                        url: "/order/finishOrder",
+                        data:{id: this.id},
+                        success:(data)=>{
+                            alert("完成订单成功")
+                            window.location.href = "./morder.html";
+                        },
+                        error:function() {alert("完成订单失败");},
+
+                    });
+                }
+
+                document.getElementById("MyDiv").style.display = 'none';
+                document.getElementById("fade").style.display = 'none';
+            });
+
+            //只有新式的浏览器才有，EventSource是SSE的客户端
+            if (!!window.EventSource) {
+                var source = new EventSource('/order/serverPush');
+                s = '';
+                source.addEventListener('open', function(e) {
+                    console.log("连接打开");
+                }, false);
+                //添加SSE监听，获得服务器推送的消息
+                source.addEventListener('message', function(e) {
+                    console.log(e);
+                    document.getElementById("p3").style.display = 'block';
+                    /*s += e.data + "<br/>";
+                    $('#msgFromPush').html(s);*/
+                }, false);
+                // 上次回调事件
+                source.addEventListener("connecttime", function(event) {
+                    // console.log("Connection was last established at: " + event.data);
+                }, false);
+                // 发生错误时
+                source.addEventListener('error', function(e) {
+                    if (e.readyState == EventSource.CLOSED) {
+                        console.log('连接关闭');
+                    } else {
+                        // 关闭sse
+                        source.close();
+                        console.log(e.target.readyState);
+                    }
+                },false);
+            } else {
+                console.log('你的浏览器不支持SSE');
+            }
+            /**
+             * 上面的方法也可以写成 ： source.onMessage = function(e){console.log(e)}
+             * 上面的几个方法都可以以类似的方法写
+             */
+        });
+	</script>
+</head>
+
+
+<body>
+    <div class="welcome">
+        <p id="p1">欢迎使用商家端，</p>
+        <p id="p3">   您有新的订单</p>
+        <p id="p2">祝您生意兴隆</p>
+        <div style="clear:both"></div>
+    </div>
+
+    <div class="guide">
+        <p class="pad"></p>
+        <p id="thispage">➡订单管理⬅</p>
+        <p class="pad"></p>
+        <a href="./dish.html">菜品管理</a>
+        <p class="pad"></p>
+        <a href="./user.html">用户管理</a>
+        <p class="pad"></p>
+        <div style="clear:both"></div>
+    </div>
+
+    <div class="scontainer">
+        <div class="container">
+            <div style="clear:both"></div>
+        </div>
+    </div>
+
+    <div id="fade" class="black_overlay"></div>
+	<div id="MyDiv" class="white_content">
+        <div class="dishcontainer">
+            <img class="insideimg" src="../images/dish1.jpg" alt="没有菜品图片">
+            <div class="info2">
+                <p>鸡排饭</p>
+                <p>X2</p>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+    </div>
+</body>
+
+</html>

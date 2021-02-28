@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>菜品管理</title>
+    <script src="https://cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="../css/dish.css" type="text/css">
+    <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script>
+        $(document).ready(function(){
+		    $(".adddish").click(function() {
+			    document.getElementById("MyDiv").style.display = 'block';
+			    document.getElementById("fade").style.display = 'block';
+			    var bgdiv = document.getElementById("fade");
+			    bgdiv.style.width = document.body.scrollWidth;
+                $("#fade").height($(document).height());
+            });
+            $(".adddish").mouseenter(function(){
+                $("#addword").text("添加菜品");
+            });
+            $(".adddish").mouseleave(function(){
+                $("#addword").text("+");
+            });
+		    $("#fade").click(function() {
+			    document.getElementById("MyDiv").style.display = 'none';
+			    document.getElementById("fade").style.display = 'none';
+            });
+
+            var id = $.cookie('id');
+            var divA = document.getElementById("p1");
+            divA.innerHTML = divA.innerText+id+'!     今天过得如何？';
+
+            $.ajax({
+                type: "GET",
+                url: "/cuisine/findByMerchantId",
+                data:{id: id},
+                success:(result)=>{
+                    console.log(result);//打印服务端返回的数据(调试用)
+                    var Cuisines =eval(result);
+                    $.each(Cuisines,function(index,value)
+                    {
+                        var name =value.cuisinename;
+                        var imgpath=value.imgpath;
+                        var unitprice=value.unitprice;
+                        var bid=value.id;
+                        var cuisine=createEle(name,unitprice,bid,imgpath);
+                        $(".container").prepend(cuisine);
+                    });
+
+
+                },
+                error:function(e) {console.log(e);alert(e);},
+            });
+
+            function createEle(name,unitprice,bid,imgpath)
+            {
+                var $cuisine=$("<div class=\"dishcontainer\">\n"+
+                    "<img src=\"/imgresources/"+imgpath+"\" alt=\"没有菜品图片\" />\n"+
+                    "<div class=\"info\">\n"+
+                    "<p>"+name+"     "+unitprice+"元</p>\n"+
+                    "</div>\n"+
+                    "<button class=\"deleteb\" id=\""+bid+"\">-</button>\n"+
+                    "<div style=\"clear:both\"></div>\n"+
+                    "</div>");
+                return $cuisine;
+            };
+
+            $(document).on('click','.deleteb',function(e){
+                var dishid = e.target.id;
+                $.ajax({
+                    type: "GET",
+                    url: "/cuisine/deleteById",
+                    data:{id: dishid},
+                    success:(result)=>{
+                        window.location.href = "./dish.html";
+                    },
+                    error:function() {alert("删除失败");},
+                });
+            });
+
+            var fileInput = document.getElementById('test-image-file');
+            var info = document.getElementById('test-file-info');
+            // 监听change事件:
+            fileInput.addEventListener('change', function() {
+                // 检查文件是否选择:
+                if (!fileInput.value) {
+                    info.innerHTML = '没有选择文件';
+                    return;
+                }
+                // 获取File引用:
+                var file = fileInput.files[0];
+                //判断文件大小
+                var size = file.size;
+                if (size >= 1 * 1024 * 1024) {
+                    alert('选择的图片太大了！');
+                    return false;
+                }
+                // 获取File信息:
+                info.innerHTML = '文件: ' + file.name + '<br>' +
+                    '大小: ' + file.size + '<br>' +
+                    '修改: ' + file.lastModifiedDate;
+                if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
+                    alert('不是有效的图片文件!');
+                    return;
+
+                    // 读取文件:
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var data = e.target.result; // 'data:image/jpeg;base64,/9j/4AAQSk...(base64编码)...}'
+                    };
+                    // 以DataURL的形式读取文件:
+                    reader.readAsDataURL(file);
+                    console.log(file);
+                }
+            });
+
+            $("#imgbtn").click(function(){
+                var cuisinename = $("#cuisinename").val();
+                var description = $("#description").val();
+                var unitprice = $("#unitprice").val();
+                var file = fileInput.files[0];
+                var formData = new FormData();
+                formData.append("merchantid", id);
+                formData.append("cuisinename", cuisinename);
+                formData.append("description", description);
+                formData.append("unitprice", unitprice);
+                formData.append("upload", file);
+                $.ajax({
+                    type: 'POST',
+                    url: "/cuisine/addCuisine",
+                    cache: false,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success:(data)=>{
+                        alert("保存成功")
+                        window.location.href = "./dish.html";
+                    },
+                    error:function() {alert("保存失败");},
+                });
+            })
+
+        });
+
+	</script>
+
+</head>
+
+
+<body>
+    <div class="welcome">
+        <p id="p1">欢迎使用商家端，</p>
+        <p id="p2">祝您生意兴隆</p>
+        <div style="clear:both"></div>
+    </div>
+
+    <div class="guide">
+        <p class="pad"></p>
+        <a href="./morder.html">订单管理</a>
+        <p class="pad"></p>
+        <p id="thispage">➡菜品管理⬅</p>
+        <p class="pad"></p>
+        <a href="./user.html">用户管理</a>
+        <p class="pad"></p>
+        <div style="clear:both"></div>
+    </div>
+
+    <div class="container">
+        <div class="adddish">
+            <p id="addword">+</p>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+
+    <div id="fade" class="black_overlay"></div>
+	<div id="MyDiv" class="white_content">
+        <form onsubmit="return false" enctype="multipart/form-data" method="post" class="form">
+            <p class="f1">菜品名称: <input class="f2" type="text" name="cuisinename" id="cuisinename"/></p>
+            <p class="f1">菜品描述: <input class="f2" type="text" name="description" id="description"/></p>
+            <p class="f1">单价: <input class="f2" type="text" name="unitprice" id="unitprice"/></p>
+            <b class="f1">上传图片:    </b>
+            <label class="btn-upload" for="test-image-file">点我上传</label>
+            <input type="file" id="test-image-file" accept="image/gif, image/jpeg, image/png, image/jpg">
+            <p id="test-file-info"></p>
+            <input id="imgbtn" type="submit" value="提交" />
+            <p style="padding-top: 100px;"></p>
+        </form>
+    </div>
+</body>
+
+</html>

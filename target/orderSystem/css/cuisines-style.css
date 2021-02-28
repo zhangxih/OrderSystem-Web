@@ -1,0 +1,327 @@
+html,body{
+    width:100%;
+    height:100%;
+}
+body{
+    /*background-image: url('../resource/background.jpg');*/
+    background-image: linear-gradient(120deg,#3498db,#8e44ad);
+    /* align-content: center; */
+}
+
+.tit {
+    color: whitesmoke;
+    font-size: larger;
+
+}
+
+.nav{
+    list-style:none;
+    width:160px;
+    height:30px;
+
+    padding: 0px;
+}
+
+.nav>li{
+
+    width:80px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.5) ;
+    float: left;
+    font-size: 12px ;
+
+}
+
+.sub{
+
+    list-style: none;
+    background-color:rgba(255, 255, 255, 0.5);
+    padding: 0px;
+    display: none;
+    position: relative;
+    z-index: 10;
+
+}
+
+.sub>li{
+    width: 80px;
+}
+
+#display_box {
+    margin-top: 10px;
+    display: flex;
+    width: 1000px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    align-content: center;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    border: 0 solid;
+    color: whitesmoke;
+}
+
+#title_bar{
+
+    margin-top: 0px;
+    display: flex;
+    width: 1000px;
+    height: 30px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    align-content: center;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 0 solid;
+    color: whitesmoke;
+
+}
+
+#btn_home{
+    background-color: rgba(255, 255, 255, 0.5);
+    color:black;
+    border: none;
+
+}
+
+#btn_personal{
+    background-color: rgba(255, 255, 255, 0.5);
+    color:black;
+    border: none;
+
+}
+
+.messageList{
+    width:900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    background-color: blue;
+
+}
+
+main {
+    padding: 100px 0 50px;
+    background: #fff;
+    font-size: 15px;
+}
+
+main .btn,
+header .btn {
+    background: #fe4578;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    border: none;
+    color: #fff;
+    border-radius: 0;
+}
+
+main .btn i,
+header .btn i {
+    padding-right: 5px;
+}
+
+main .btn:hover,
+header .btn:hover,
+main .btn:active,
+header .btn:active,
+main .btn:focus,
+header .btn:focus {
+    background: #5f5f5f;
+    color: #fff;
+}
+
+main .cuisine {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+main .cuisine:hover .inner {
+    background: #fe4578;
+}
+
+main .cuisine:hover .inner *,
+main .cuisine:hover .inner .cuisine-unitprice {
+    color: #fff;
+}
+
+main .cuisine .image {
+    height: 220px;
+}
+main .cuisine .image img {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: 50%;
+}
+
+main .cuisine .inner {
+    -webkit-transition: background 0.25s ease;
+    transition: background 0.25s ease;
+    position: relative;
+    padding: 35px 15px 15px;
+}
+
+main .cuisine .inner .btn {
+    position: absolute;
+    width: 55px;
+    height: 55px;
+    line-height: 46px;
+    text-align: center;
+    background: #fe4578;
+    padding: 0;
+    border: 5px solid #fff;
+    border-radius: 50%;
+    font-size: 35px;
+    left: 0;
+    right: 0;
+    top: 0;
+    margin: -27.5px auto 0;
+    -webkit-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+}
+
+main .cuisine .inner .btn:hover {
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+main .cuisine .inner .btn:hover:active {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+main .cuisine .inner .btn i {
+    position: relative;
+    left: 4px;
+}
+
+main .cuisine .inner .cuisine-name {
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+main .cuisine .inner .cuisine-unitprice {
+    margin-top: 10px;
+    color: #fe4578;
+    display: block;
+}
+
+main .widget {
+    padding-bottom: 50px;
+    background: #fff;
+    padding: 0 15px 15px;
+}
+
+main .cart-empty {
+    padding-top: 20px;
+}
+
+main .cart {
+    position: relative;
+}
+
+main .cart:before,
+main .cart:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+main .cart .cart-total:before {
+    content: '总计: ';
+    padding-right: 10px;
+}
+
+main .cart ol {
+    list-style: none;
+    padding: 20px 0;
+}
+
+main .cart ol li {
+    position: relative;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+
+main .cart ol li:first-child {
+    border-top: 1px solid #eee;
+}
+
+main .cart ol li button {
+    position: absolute;
+    top: 50%;
+    margin-top: -12.5px;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    background: transparent;
+    border: none;
+    color: #fe4578;
+    border-radius: 50%;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+main .cart ol li button:hover {
+    background: #fe4578;
+    color: #fff;
+}
+
+main .cart ol li .cart-name {
+    display: block;
+}
+
+main .cart ol li input,
+main .cart ol li .cart-price {
+    color: #fe4578;
+    border: none;
+}
+
+main .cart ol li input {
+    width: 50px;
+}
+
+main .cart ol li .cart-price:after {
+    content: 'x';
+    padding: 0 10px;
+}
+
+main .cart .cart-checkout,
+main .cart .cart-clear {
+    width: 45%;
+    padding: 10px 0;
+    border: none;
+    color: #fff;
+    -webkit-transition: background 0.2s ease;
+    transition: background 0.2s ease;
+}
+
+main .cart .cart-checkout:hover,
+main .cart .cart-clear:hover {
+    background: #5f5f5f;
+}
+
+main .cart .cart-checkout {
+    float: right;
+    background: #fe4578;
+}
+
+main .cart .cart-clear {
+    float: left;
+    background: #00c680;
+}
+
+main .cart-empty {
+    padding-top: 0;
+    bottom: auto;
+    top: -30px;
+    left: 1px;
+    text-align: left;
+}
+
+

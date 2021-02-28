@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal</title>
+    <link rel="icon" href="/icon/log-in-outline.svg"/>
+    <script src="https://cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/main-style.css" type="text/css">
+    <script>
+        $().ready(function(){
+        $("#btn_home").click(function(){
+            console.log("clicked");
+            window.location.href = "home.html";
+        }
+        )
+        })
+    </script>
+</head>
+
+
+<body>
+    <div class="container" id="title_bar">
+        <button id="btn_home" >Home</button>
+        <button id="btn_personal" >Personal</button>
+    </div>
+
+    <div class="container" id="display_box">
+        <div class="tit">
+            <h2>Register</h2>
+        </div>
+     
+    </div>
+</body>
+</html>

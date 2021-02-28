@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理</title>
+    <link rel="stylesheet" href="../css/user.css" type="text/css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            var id = $.cookie('id');
+            var divA = document.getElementById("p1");
+            divA.innerHTML = divA.innerText+id+'!     今天过得如何？';
+
+            $("#btn").click(function(){
+                var f=document.getElementById("f");
+                if(f.password.value=="")
+                {
+                    alert("请输入新密码");
+                    return false;
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: "/merchant/setAccount",
+                    data:$('#f').serialize()+'&id='+id,
+                    success:(data)=>{
+                        alert("保存成功")
+                        window.location.href = "./user.html";
+                    },
+                    error:function() {alert("保存失败");},
+
+                });
+            })
+
+            $.ajax({
+                url: "/merchant/getAccount",
+                type: "GET",
+                data:{id: id},
+                success:(result)=>{
+                    var obj = eval(result);
+                    document.getElementById("i1").value=obj.name;
+                    document.getElementById("i2").value=obj.address;
+                    document.getElementById("i3").value=obj.merchantdescription;
+                    document.getElementById("i4").value=obj.businesshours;
+                }
+            });
+
+            var fileInput = document.getElementById('test-image-file');
+            var info = document.getElementById('test-file-info');
+            // 监听change事件:
+            fileInput.addEventListener('change', function() {
+                // 检查文件是否选择:
+                if (!fileInput.value) {
+                    info.innerHTML = '没有选择文件';
+                    return;
+                }
+                // 获取File引用:
+                var file = fileInput.files[0];
+                //判断文件大小
+                var size = file.size;
+                if (size >= 1 * 1024 * 1024) {
+                    alert('选择的图片太大了！');
+                    return false;
+                }
+                // 获取File信息:
+                info.innerHTML = '文件: ' + file.name + '<br>' +
+                    '大小: ' + file.size + '<br>' +
+                    '修改: ' + file.lastModifiedDate;
+                if (file.type !== 'image/jpeg' && file.type !== 'image/png' && file.type !== 'image/gif') {
+                    alert('不是有效的图片文件!');
+                    return;
+
+                    // 读取文件:
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var data = e.target.result; // 'data:image/jpeg;base64,/9j/4AAQSk...(base64编码)...}'
+                    };
+                    // 以DataURL的形式读取文件:
+                    reader.readAsDataURL(file);
+                    console.log(file);
+                }
+            });
+
+            $("#imgbtn").click(function(){
+                var file = fileInput.files[0];
+                var formData = new FormData();
+                formData.append("id", id);
+                formData.append("upload", file);
+                $.ajax({
+                    type: 'POST',
+                    url: "/merchant/uploadImg",
+                    cache: false,
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success:(data)=>{
+                        alert("保存成功")
+                        window.location.href = "./user.html";
+                    },
+                    error:function() {alert("保存失败");},
+
+                });
+            })
+        });
+    </script>
+</head>
+
+
+<body>
+    <div class="welcome">
+        <p id="p1">欢迎使用商家端，</p>
+        <p id="p2">祝您生意兴隆</p>
+        <div style="clear:both"></div>
+    </div>
+
+    <div class="guide">
+        <p class="pad"></p>
+        <a href="./morder.html">订单管理</a>
+        <p class="pad"></p>
+        <a href="./dish.html">菜品管理</a>
+        <p class="pad"></p>
+        <p id="thispage">➡用户管理⬅</p>
+        <p class="pad"></p>
+        <div style="clear:both"></div>
+    </div>
+
+    <div class="container">
+        <div class="formcontainer">
+            <form onsubmit="return false" action="##" method="post" class="form" id="f">
+                <p class="f1">商家名: <input class="f2" id="i1" type="text" name="name" /></p>
+                <p class="f1">密码: <input class="f2" type="text" name="password" /></p>
+                <p class="f1">地址: <input class="f2" id="i2" type="text" name="address" /></p>
+                <p class="f1">商铺信息: <input class="f2" id="i3" type="text" name="merchantdescription" /></p>
+                <p class="f1">开业时间: <input class="f2" id="i4" type="text" name="businesshours" /></p>
+                <input id="btn" type="submit" value="提交" />
+            </form>
+            <form style="margin-top: 100px" onsubmit="return false" method="post" enctype="multipart/form-data" class="form" id="file_upload">
+                <b class="f1">上传图片:    </b>
+                <label class="btn-upload" for="test-image-file">点我上传</label>
+                <input type="file" id="test-image-file" accept="image/gif, image/jpeg, image/png, image/jpg">
+                <p id="test-file-info"></p>
+                <input id="imgbtn" type="submit" value="提交" />
+            </form>
+        </div>
+        <div style="clear:both"></div>
+        <p id="top"></p>
+    </div>
+
+
+</body>
+
+</html>

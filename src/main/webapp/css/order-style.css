@@ -1,0 +1,275 @@
+html,body{
+    width:100%;
+    height:100%;
+    padding: 0;
+    margin: 0;
+}
+body{
+    display: flex;
+    flex-direction: column;
+    position:relative;
+  
+}
+
+#title{
+    margin-left: -180px;
+    background-color: white;
+    font-family: Candara;
+    color:rgba(0, 0, 0, 0.911);
+    border: none;
+    font-weight: 600;
+    font-size: 28px;
+    
+}
+
+#background_box>#tip{
+    background-color:rgba(0,0,0,0.2); 
+}
+
+.nav{
+    list-style:none;
+    width:160px;
+    height:30px;
+    
+    padding: 0px;
+}
+
+.nav>li{
+
+    width:80px;
+    height: 30px;
+    justify-content: space-around;
+    align-content: center;
+    line-height: 30px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.5) ;
+    float: left;
+    font-size: 12px ;
+  
+}
+
+.sub{
+
+
+    list-style: none;
+    background-color:white;
+    padding: 0px;
+    display: none;
+    position: relative;
+    z-index: 10;
+  
+}
+
+#title_bar{
+    
+    display: flex;
+    width: 100%;
+    height: 68px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    align-content: center;
+    background-color:rgb(255, 255, 255);
+    border-bottom: 1px rgba(235, 230, 230, 0.966) solid ;
+    padding: 0;
+    position: fixed;
+    top: 0;
+
+
+
+
+}
+
+
+
+#btn_home{
+    width: 200px;
+    height: 100%;
+    background-color: white;
+    font-family:Candara;
+    color:rgba(0, 0, 0, 0.700);
+    border: none;
+    font-weight: bold;
+    font-size: 17px;
+
+
+}
+
+#btn_home:hover{
+    cursor: pointer;
+    color:rgba(247, 164, 10, 0.651)
+}
+
+#btn_personal{
+    width: 200px;
+    height: 100%;
+    background-color:white;
+    font-family:Candara;
+    color:rgba(0, 0, 0, 0.700);
+    border: none;
+    font-weight: bold;
+    font-size: 17px;
+
+}
+
+#btn_personal:hover{
+    cursor: pointer;
+    color:rgba(247, 164, 10, 0.651)
+}
+
+.sub>#btn_info{
+    height: 40px;
+    line-height:40px;
+    background-color:white;
+    font-family:Candara;
+    color:rgba(0, 0, 0, 0.253);
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+
+}
+
+#btn_info:hover{
+    cursor: pointer;
+    background-color: rgba(161, 158, 158, 0.082);
+}
+
+.sub>#btn_order{
+    height: 40px;
+    line-height:40px;
+    background-color:white;
+    font-family:Candara;
+    color:rgba(0, 0, 0, 0.253);
+    border: none;
+    font-size: 16px;
+
+}
+
+#btn_order:hover{
+    cursor: pointer;
+    background-color: rgba(161, 158, 158, 0.082);
+}
+
+
+
+#display_box {
+    margin-top: 0px;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    align-content: center;
+    background-color: rgba(231, 199, 111, 0.267);
+    border-radius: 5px;
+    border: 0 solid;
+    color: whitesmoke;
+}
+
+
+
+.messageList{
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    background-color: rgba(183, 183, 187, 0.048);
+    font-family:Candara;
+    
+
+}
+
+.messageList>.info{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: -200px;
+    display: flex;
+    width: 800px;
+    height: 135px;
+    background-color: rgb(255, 255, 255);
+    border-bottom-width: 1px;
+    border-bottom-color: black;
+    border-bottom-style: solid;
+    color: black;
+    border-radius: 10px;
+    box-shadow:0 1px 20px rgba(7, 7, 7, 0.021)
+
+
+}
+
+
+
+.info>img{
+    width: 135px;
+    height: 135px;
+    background:  "../images/default.png";
+    border-radius: 10px;
+}
+
+#orderinfo{
+    display: flex;
+    flex-direction: column;
+
+}
+
+#orderinfo>#merchantname{
+    margin-top: 1px;
+    margin-left: 20px;
+    font-family:Candara;
+    font-size: 15px;
+}
+
+#orderinfo>#time{
+    margin-top: 1px;
+    margin-left: 20px;
+    font-size: 15px;
+    font-family:Candara;
+
+}
+
+#orderinfo>#totalprice{
+    margin-top: 1px;
+    margin-left: 20px;
+    font-size: 17px;
+    font-family:Candara;
+    color: gray;
+}
+
+#orderinfo>#status{
+    margin-top: 1px;
+    margin-left: 20px;
+    font-family:Candara;
+    font-size: 15px;
+}
+
+#orderinfo>#orderid{
+    margin-top: 15px;
+    font-family:Sans-serif;
+    margin-left: 20px;
+    font-size: 18px;
+
+}
+
+#cancelorder{
+    width: 200px;
+    height: 100%;
+    background-color: white;
+    font-family:Candara;
+    color:rgba(0, 0, 0, 0.700);
+    border: none;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+#finishorder{
+    width: 200px;
+    height: 100%;
+    background-color: white;
+    font-family:Candara;
+    color:rgba(0, 0, 0, 0.700);
+    border: none;
+    font-weight: bold;
+    font-size: 17px;
+}

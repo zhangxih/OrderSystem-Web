@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="icon" href="/icon/log-in-outline.svg"/>
+    <script src="https://cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="../css/login-style.css" type="text/css">
+    <script type="text/javascript" src="../js/cookie.js"></script>
+
+
+
+</head>
+
+
+<body>
+<div class="container">
+    <div class="tit">
+        <h2>Login</h2>
+    </div>
+    <form  method="post" onsubmit="return false" action="##" >
+        <input id="id" type="text" name="id" placeholder="enter your account">
+        <input id="pwd" type="text" name="password" placeholder="enter your password">
+        <input id="btn_login" type="button" value="Login in">
+        <input id="btn_mlogin" type="button" value="Merchant Login in">
+
+    </form>
+    <button id="go_to_register">register</button>
+</div>
+</body>
+
+<script>
+    $("#btn_login").click(function(){
+        console.log("test");
+        $.ajax({
+            type: 'POST',
+            url: "/customer/login",
+            data:$('form').serialize(),
+            success:(data)=>{
+                console.log(data);//打印服务端返回的数据(调试用)
+                window.location.href = "/html/home.html";
+                addCookie("id",$("#id").val());
+            },
+            error:function() {alert("账号或密码错误");},
+
+        });
+    })
+
+    $("#btn_mlogin").click(function(){
+        console.log("test");
+        $.ajax({
+            type: 'POST',
+            url: "/merchant/login",
+            data:$('form').serialize(),
+            success:(data)=>{
+                console.log(data);//打印服务端返回的数据(调试用)
+                window.location.href = "/html/dish.html";
+                addCookie("id",$("#id").val());
+            },
+            error:function() {alert("账号或密码错误");},
+
+        });
+    })
+
+    $("#go_to_register").click(function () {
+        window.location.href = "/html/register.html";
+
+    })
+
+</script>
+</html>

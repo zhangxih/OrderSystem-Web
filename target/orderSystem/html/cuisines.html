@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuisines</title>
+    <link rel="icon" href="/icon/log-in-outline.svg"/>
+    <script src="https://cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+    <!--引入bootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../css/cuisines-style.css" type="text/css">
+    <script type="text/javascript" src="../js/cookie.js"></script>
+    <script type="text/javascript" src="../js/cuisines-cart.js"></script>
+</head>
+
+<body>
+<div class="container" id="title_bar">
+    <ul class="nav">
+        <li id="btn_home">首页</li>
+        <li id="btn_personal">我的
+            <ul class="sub">
+                <li id="info">个人信息</li>
+                <li id="order">我的订单</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="row" id="messageList"></div>
+            </div>
+            <div class="col-md-3">
+                <div class="widget">
+                    <h2>购物车</h2>
+                    <div class="cart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+</div>
+</body>
+
+</html>

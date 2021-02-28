@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrderItem</title>
+    <link rel="icon" href="/icon/log-in-outline.svg" />
+    <script src="https://cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/orderitem-style.css" type="text/css">
+    <script type="text/javascript" src="/js/cookie.js"></script>
+
+</head>
+
+
+<body>
+    <div class="container" id="title_bar">
+        <span id="title">Yummy</span>
+        <ul class="nav">
+            <li id="btn_home">Home</li>
+            <li id="btn_personal">My
+                <ul class="sub">
+                    <li id="btn_info">Personal</li>
+                    <li id="btn_order">Orders</li>
+                    <li id="btn_finish_order">Finish Order</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+
+
+
+
+    <div class="container" id="display_box">
+        
+        <div class="messageList">
+        </div>
+
+    </div>
+
+    
+</body>
+<script>
+
+
+    $(".nav>#btn_home").click(function () {
+        window.location.href = "/html/home.html";
+    })
+    $(".sub>#btn_finish_order").click(function () {
+        $.ajax({
+        type: "Post",
+        url: "/order/confirmReceipt",
+        dataType: "json",
+            data: { id: getCookie("OrderId") },
+        success: (result) => {
+
+
+        },
+        error: function (e) { console.log(e); alert("收货成功");},
+    }); 
+    })
+    $(".nav>#btn_personal").mouseenter(function () {
+        var $sub = $(this).children(".sub");
+        $sub.stop();
+        $sub.slideDown(500);
+    })
+    $(".nav>#btn_personal").mouseleave(function () {
+        var $sub = $(this).children(".sub");
+        $sub.stop();
+        $sub.slideUp(500);
+    })
+    $(".sub>#btn_info").click(function () {
+        window.location.href = "/html/info.html";
+    })
+    $(".sub>#btn_order").click(function () {
+        window.location.href = "/html/order.html";
+    })
+
+
+$.ajax({
+    type: "POST",
+    url: "/order/getById",
+    data: { id: getCookie("OrderId") },
+    async:false,
+    success: (result) => {
+        $.each(result.orderItems, function (index, value) {
+            console.log(value);
+            var id = value.id;
+            var cuisineid =value.cusineid;
+            var img = value.cuisine.imgpath;
+            var cuisinename = value.cuisine.cuisinename;
+            var price = value.price;
+            var cuisinenum = value.cuisinenum;
+            var unitprice = value.cuisine.unitprice;
+            var cuisinedescription = value.cuisine.description;
+
+
+
+            var orderitem = createEle(id, cuisinename, price, cuisinenum, unitprice,cuisinedescription,img);
+            $(".messageList").prepend(orderitem);
+
+        });
+
+
+    },
+    error: function (e) { console.log(e); alert(e); },
+});
+
+
+
+function createEle(id, cuisinename, price, cuisinenum, unitprice,cuisinedescription,img) {
+    var $order = $(" <div class=\"info\" id=\"" + id + "\">\n" +
+        "<img src=\"/imgresources/"+img+"\" alt=\"没有菜品图片\" />\n"+
+        "<div id=\"orderiteminfo\">\n" +
+        "<span id=\"cuisinename\">" +cuisinename + "</span>\n" +
+        "<span id=\"price\">" + price + "</span>\n" +
+        "<span id=\"cuisinenum\">" + cuisinenum + "</span>\n" +
+        "<span id=\"unitprice\">" +unitprice + "</span>\n" +
+        "<span id=\"cuisinedescription\">" +cuisinedescription + "</span>\n" +
+        "</div>\n" +
+        "</div>");
+    return $order;
+};
+</script>
+</html>
+
+</html>

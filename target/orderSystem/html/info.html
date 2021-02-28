@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Info</title>
+    <link rel="icon" href="/icon/log-in-outline.svg"/>
+    <script src="https://cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/info-style.css" type="text/css">
+    <script type="text/javascript" src="/js/cookie.js"></script>
+
+
+</head>
+
+
+<body>
+    <div class="container" id="title_bar">
+        <div class="container" id="background_box">
+            <span id="title">Yummy</span>
+        </div>
+        <ul class="nav">
+            <li id="btn_home">Home</li>
+            <li id="btn_personal">my
+                <ul class="sub">
+                    <li id="btn_info">Personal</li>
+                    <li id="btn_order">Orders</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+
+
+
+
+    <div class="container" id="display_box">
+        <span id="txt_me">About Me</span>
+        <span id="txt_balance">My Balance:</span>
+        <span id="balance">10000</span>
+        
+
+        <form method="post" onsubmit="return false" action="##">
+            <input id="id" type="hidden" name="id" placeholder="enter your name">
+            <span id="txt_name">My Name:</span>
+            <input id="name" type="text" name="name" placeholder="enter your name">
+            <span id="txt_address">My Address:</span>
+            <input id="address" type="text" name="address" placeholder="enter your address">
+            <input id="btn_save" type="button" value="Save">
+         </form>
+     
+    </div>
+</body>
+
+<script>
+    $(".nav>#btn_home").click(function(){
+        window.location.href = "/html/home.html";
+    })
+    $(".nav>#btn_personal").mouseenter(function()
+    {
+        var $sub=$(this).children(".sub");
+        $sub.stop();
+        $sub.slideDown(500);
+    })
+    $(".nav>#btn_personal").mouseleave(function()
+    {
+        var $sub=$(this).children(".sub");
+        $sub.stop();
+        $sub.slideUp(500);
+    })
+    $(".sub>#btn_info").click(function(){
+        window.location.href = "/html/info.html";
+    })
+    $(".sub>#btn_order").click(function(){
+        window.location.href = "/html/order.html";
+    })
+</script>
+
+<script>
+
+    $.ajax({
+        type: 'POST',
+        url: "/customer/getAccount",
+        data:{id:getCookie("id")},
+        success:(data)=>{
+            console.log(data.name);
+            console.log(data.address);
+            $("#id").val(data.id);
+            $("#name").val(data.name);
+            $("#address").val(data.address);
+            $("#balance").val(data.balance);
+        },
+
+        error:function() {alert("失败");},
+
+    });
+
+
+    $("#btn_save").click(function(){
+        $.ajax({
+            type: 'POST',
+            url: "/customer/setAccount",
+            data:$('form').serialize(),
+            success:(data)=>{
+                console.log(data);//打印服务端返回的数据(调试用)
+                alert("保存成功");
+
+            },
+            error:function() {alert("保存失败");},
+        });
+    })
+
+
+
+</script>
+</html>
+</html>

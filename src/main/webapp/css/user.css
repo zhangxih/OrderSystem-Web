@@ -1,0 +1,167 @@
+#p1{
+    float: left;
+}
+
+#p2{
+    float: right;
+}
+
+body{
+    width: 1900px;
+}
+
+.welcome{
+    background-color: rgba(1,182,253,255);
+    color: white;
+    font-size: 30px;
+    font-weight: 600;
+    padding-left: 50px;
+    padding-right: 50px;
+    position: fixed;
+    top: 0px;
+    width: 1800px;
+}
+
+.guide{
+    width: 200px;
+    border: 10px solid rgba(1,182,253,255);
+    border-radius: 25px;
+    padding: 10px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    position: fixed;
+    margin-top: 150px;
+    margin-left: 50px;
+}
+
+#thispage{
+    color:orange;
+    position: relative;
+    top: 10px;
+}
+
+.pad{
+    padding: 50px;
+}
+
+a:LINK {
+    color: black;
+    text-decoration: none;
+}
+
+a:HOVER{
+    color: rgba(1,182,253,255);
+}
+
+a:VISITED{
+    color: black;
+}
+
+.container{
+    float: left;
+    width: 80%;
+    margin-top: 150px;
+    margin-left: 350px;
+    background-image: url(../images/back.jpg);
+}
+
+.formcontainer{
+    width: 500px;
+    margin: 0 auto;
+}
+
+.form{
+    padding-top: 20px;
+}
+
+.f1{
+    padding-bottom: 30px;
+    font-size: 30px;
+    font-weight: 600;
+    color: rgba(1,182,253,255);
+}
+
+.f2{
+    padding: 10px;
+    border-color:white;
+}
+
+.f2:FOCUS{
+    border-color:black;
+}
+
+.f2:HOVER{
+    border-color:black;
+}
+
+#btn{
+    height: 40px;
+    width: 250px;
+    text-align: center;
+    background:linear-gradient(120deg,#3498db,#8e44ad,#3498db);
+    background-size:200%;
+    color: whitesmoke;
+    border-radius: 5px;
+    border:2px;
+    border-color: gainsboro;
+    font-size: medium;
+    font-family: sans-serif;
+    transition: 0.5s;
+}
+
+#imgbtn{
+    height: 40px;
+    width: 250px;
+    text-align: center;
+    background:linear-gradient(120deg,#3498db,#8e44ad,#3498db);
+    background-size:200%;
+    color: whitesmoke;
+    border-radius: 5px;
+    border:2px;
+    border-color: gainsboro;
+    font-size: medium;
+    font-family: sans-serif;
+    transition: 0.5s;
+}
+
+#btn:HOVER{
+    background-position: right;
+}
+
+#imgbtn:HOVER{
+    background-position: right;
+}
+
+p{
+    white-space: pre;
+}
+
+b{
+    white-space: pre;
+}
+
+#top{
+    margin-top: 100px;
+}
+
+#test-image-file{
+    height: 40px;
+    width: 250px; height: 0px; font-size: 0px; line-height: 0px; outline: none;
+}
+
+.btn-upload{
+    display: inline-block;
+    border-radius: 4px;
+    padding: 10px 10px;
+    border: 0;
+    background-color: #f66;
+    color: #fff;
+    position: relative;
+    z-index: 2;
+}
+
+.btn-upload:HOVER{
+    opacity: 0.8;
+    cursor: pointer;
+}
